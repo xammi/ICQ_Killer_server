@@ -11,6 +11,7 @@ import sockets.Socket;
 import java.lang.Thread;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by max on 10.03.15.
@@ -47,12 +48,15 @@ public class AccountService implements Abonent, Runnable {
         String user = query.getUser();
 
         if (clients.containsKey(user)) {
-            msys.sendMessage(new LoginAnswer(addressBack, false));
+            Set<String> others = clients.keySet();
+            others.remove(user);
+
+            msys.sendMessage(new LoginAnswer(addressBack, true, others));
             System.out.println("login: User already exists (" + user + ")");
         }
         else {
             clients.put(user, null);
-            msys.sendMessage(new LoginAnswer(addressBack, true));
+            msys.sendMessage(new LoginAnswer(addressBack, true, null));
             System.out.println("login: success(" + user + ")");
         }
     }

@@ -1,5 +1,5 @@
 Client {
-    (ajax) login: {
+    login: {
         nickname: string
     }
 
@@ -19,3 +19,5 @@ Server {
         text: string,
     }
 }
+
+(ajax-request post) login -> (response) logged-in
