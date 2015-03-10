@@ -1,5 +1,6 @@
 package msgsystem.messages;
 
+import msgsystem.AddressService;
 import services.AccountService;
 import msgsystem.Abonent;
 
@@ -10,8 +11,8 @@ public class LoginQuery extends AbstractMsg {
 
     private final String user;
 
-    public LoginQuery(String addressFrom, String addressTo, String user) {
-        super(addressFrom, addressTo);
+    public LoginQuery(String addressFrom, String user) {
+        super(addressFrom, AddressService.ACCOUNT_SERVICE);
         this.user = user;
     }
 

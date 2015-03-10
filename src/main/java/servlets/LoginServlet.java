@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -23,12 +24,14 @@ public class LoginServlet extends Servlet {
             throws ServletException, IOException
     {
         String user = request.getParameter("nickname");
-        this.msys.sendMessage(new LoginQuery(getAddress(), AddressService.ACCOUNT_SERVICE, user));
+        msys.sendMessage(new LoginQuery(getAddress(), user));
 
         waitForAnswer();
 
         JSONObject json = new JSONObject();
         if (this.successLogin) {
+            HttpSession session = request.getSession(true);
+            session.setAttribute("nickname", user);
             json.put("status", OK);
         }
         else {

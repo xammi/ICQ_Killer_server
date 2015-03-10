@@ -5,6 +5,7 @@ import msgsystem.AddressService;
 import msgsystem.MessageSystem;
 import msgsystem.messages.LoginAnswer;
 import msgsystem.messages.LoginQuery;
+import msgsystem.messages.SetSocket;
 import sockets.Socket;
 
 import java.lang.Thread;
@@ -45,12 +46,27 @@ public class AccountService implements Abonent, Runnable {
         String addressBack = query.getAddressFrom();
         String user = query.getUser();
 
-        if (this.clients.containsKey(user)) {
-            this.msys.sendMessage(new LoginAnswer(getAddress(), addressBack, false));
+        if (clients.containsKey(user)) {
+            msys.sendMessage(new LoginAnswer(addressBack, false));
+            System.out.println("login: User already exists (" + user + ")");
         }
         else {
-            this.clients.put(user, null);
-            this.msys.sendMessage(new LoginAnswer(getAddress(), addressBack, true));
+            clients.put(user, null);
+            msys.sendMessage(new LoginAnswer(addressBack, true));
+            System.out.println("login: success(" + user + ")");
+        }
+    }
+
+    public void setSocket(SetSocket msg) {
+        String user = msg.getUser();
+        Socket socket = msg.getSocket();
+
+        if (clients.containsKey(user)) {
+            clients.put(user, socket);
+            System.out.println("setSocket: success(" + user + ")");
+        }
+        else {
+            System.out.println("setSocket: Unknown user(" + user + ")");
         }
     }
 }

@@ -1,6 +1,7 @@
 package msgsystem.messages;
 
 import msgsystem.Abonent;
+import msgsystem.AddressService;
 import servlets.LoginServlet;
 
 /**
@@ -10,8 +11,8 @@ public class LoginAnswer extends AbstractMsg {
 
     private final boolean status;
 
-    public LoginAnswer(String addressFrom, String addressTo, boolean status) {
-        super(addressFrom, addressTo);
+    public LoginAnswer(String addressTo, boolean status) {
+        super(AddressService.ACCOUNT_SERVICE, addressTo);
         this.status = status;
     }
 
