@@ -1,0 +1,21 @@
+Client {
+    login: {
+        nickname: string
+    }
+
+    message: {
+        whom: string
+        message: string
+    }
+}
+
+Server {
+    logined: {
+        status: bool,
+        clients: []
+    }
+    message: {
+        from: string,
+        text: string,
+    }
+}
