@@ -10,10 +10,21 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 /**
  * Created by max on 10.03.15.
  * The Class for an asyncronous interaction between the system threads.
+ * Singleton.
  */
 public class MessageSystem {
 
     private final Map<String, ConcurrentLinkedQueue<AbstractMsg>> messages = new HashMap<>();
+
+    private MessageSystem() {}
+
+    private static class LazyHolder {
+        private static final MessageSystem INSTANCE = new MessageSystem();
+    }
+
+    public static MessageSystem getInstance() {
+        return LazyHolder.INSTANCE;
+    }
 
     public void register(Abonent abonent) {
         String address = abonent.getAddress();

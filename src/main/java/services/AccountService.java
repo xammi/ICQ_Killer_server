@@ -1,5 +1,10 @@
+package services;
+
 import msgsystem.Abonent;
+import msgsystem.AddressService;
 import msgsystem.MessageSystem;
+import msgsystem.messages.LoginAnswer;
+import msgsystem.messages.LoginQuery;
 import sockets.Socket;
 
 import java.lang.Thread;
@@ -14,8 +19,8 @@ public class AccountService implements Abonent, Runnable {
     private final Map<String, Socket> clients = new HashMap<>();
     private final MessageSystem msys;
 
-    public AccountService(MessageSystem msys) {
-        this.msys = msys;
+    public AccountService() {
+        this.msys = MessageSystem.getInstance();
         this.msys.register(this);
     }
 
@@ -33,6 +38,19 @@ public class AccountService implements Abonent, Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public void login(LoginQuery query) {
+        String addressBack = query.getAddressFrom();
+        String user = query.getUser();
+
+        if (this.clients.containsKey(user)) {
+            this.msys.sendMessage(new LoginAnswer(getAddress(), addressBack, false));
+        }
+        else {
+            this.clients.put(user, null);
+            this.msys.sendMessage(new LoginAnswer(getAddress(), addressBack, true));
         }
     }
 }

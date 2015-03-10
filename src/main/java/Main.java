@@ -2,11 +2,12 @@
  * Created by max on 10.03.15.
  */
 
-import msgsystem.MessageSystem;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import services.AccountService;
+import servlets.LoginServlet;
 import sockets.SocketServlet;
 
 import java.util.concurrent.ExecutorService;
@@ -35,20 +36,19 @@ public class Main
     }
 
     private static void launchServices() {
-        MessageSystem msys = new MessageSystem();
-        AccountService accountService = new AccountService(msys);
+        AccountService accountService = new AccountService();
 
         ExecutorService threadPool = Executors.newFixedThreadPool(1);
         threadPool.submit(accountService);
     }
 
     private static ServletContextHandler createServlets() {
-        Servlet servlet = new Servlet();
+        LoginServlet loginServlet = new LoginServlet();
         SocketServlet socketServlet = new SocketServlet();
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.addServlet(new ServletHolder(socketServlet), "/send");
-        context.addServlet(new ServletHolder(servlet), "/");
+        context.addServlet(new ServletHolder(loginServlet), "/");
         return context;
     }
 }
