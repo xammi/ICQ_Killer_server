@@ -48,7 +48,7 @@ public class Main
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.addServlet(new ServletHolder(socketServlet), "/send");
-        context.addServlet(new ServletHolder(loginServlet), "/");
+        context.addServlet(new ServletHolder(loginServlet), "/login");
         return context;
     }
 }

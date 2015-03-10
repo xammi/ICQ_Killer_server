@@ -16,7 +16,7 @@ public class LoginAnswer extends AbstractMsg {
     }
 
     public boolean getStatus() {
-        return status;
+        return this.status;
     }
 
     @Override

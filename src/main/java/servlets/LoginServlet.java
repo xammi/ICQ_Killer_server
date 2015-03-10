@@ -1,14 +1,11 @@
 package servlets;
 
-import msgsystem.Abonent;
 import msgsystem.AddressService;
-import msgsystem.MessageSystem;
 import msgsystem.messages.LoginAnswer;
 import msgsystem.messages.LoginQuery;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -30,16 +27,16 @@ public class LoginServlet extends Servlet {
 
         waitForAnswer();
 
-        response.setContentType("application/json; charset=UTF-8");
-        PrintWriter printout = response.getWriter();
         JSONObject json = new JSONObject();
-
         if (this.successLogin) {
             json.put("status", OK);
         }
         else {
             json.put("status", FAILED);
         }
+
+        response.setContentType("application/json; charset=UTF-8");
+        PrintWriter printout = response.getWriter();
         printout.print(json);
         printout.flush();
     }
