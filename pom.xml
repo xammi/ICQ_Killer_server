@@ -10,7 +10,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <jettyVersion>9.2.0.M0</jettyVersion>
+        <jettyVersion>9.2.7.v20150116</jettyVersion>
     </properties>
 
     <dependencies>
@@ -26,8 +26,13 @@
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty.websocket</groupId>
-            <artifactId>websocket-servlet</artifactId>
+            <artifactId>websocket-server</artifactId>
             <version>${jettyVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty.websocket</groupId>
+            <artifactId>websocket-servlet</artifactId>
+            <version>9.2.0.M0</version>
         </dependency>
         <dependency>
             <groupId>org.json</groupId>

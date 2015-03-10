@@ -1,13 +1,18 @@
 import msgsystem.Abonent;
 import msgsystem.MessageSystem;
+import sockets.Socket;
+
 import java.lang.Thread;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by max on 10.03.15.
  */
 public class AccountService implements Abonent, Runnable {
 
-    private MessageSystem msys;
+    private final Map<String, Socket> clients = new HashMap<>();
+    private final MessageSystem msys;
 
     public AccountService(MessageSystem msys) {
         this.msys = msys;

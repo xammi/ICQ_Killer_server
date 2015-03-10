@@ -8,11 +8,8 @@ import javax.servlet.annotation.WebServlet;
 @WebServlet(name = "SocketServlet", urlPatterns = {"/send"})
 public class SocketServlet extends WebSocketServlet {
 
-    private static final int IDLE_TIME = 120 * 1000;
-
     @Override
     public void configure(WebSocketServletFactory factory) {
-        factory.getPolicy().setIdleTimeout(IDLE_TIME);
-        factory.setCreator(new SocketCreator());
+        factory.register(Socket.class);
     }
 }
