@@ -43,10 +43,11 @@ REST
 Entities:
     
     /user {
-        /create {
+        /login {
             POST
             -> nickname : String
-            <- result : true|false
+            <- status: bool,
+               clients: []
         }
 
         /list {
