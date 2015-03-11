@@ -29,3 +29,28 @@ Server {
 }
 
 (ajax-request post) login -> (response) logged-in
+
+
+
+
+
+
+
+
+//-----------------------------------------------
+REST
+
+Entities:
+    
+    /user {
+        /create {
+            POST
+            -> nickname : String
+            <- result : true|false
+        }
+
+        /list {
+            GET
+            <- nicknames : []
+        }
+    }
