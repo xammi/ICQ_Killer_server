@@ -22,7 +22,7 @@ public class SocketCreator implements WebSocketCreator {
 
             if (user != null) {
                 MessageSystem msys = MessageSystem.getInstance();
-                Socket socket = new Socket();
+                Socket socket = new Socket(user);
                 msys.sendMessage(new SetSocket(user, socket));
                 return socket;
             }
