@@ -5,6 +5,7 @@ import msgsystem.AddressService;
 import msgsystem.MessageSystem;
 import msgsystem.messages.LoginAnswer;
 import msgsystem.messages.LoginQuery;
+import msgsystem.messages.SendQuery;
 import msgsystem.messages.SetSocket;
 import sockets.Socket;
 
@@ -57,7 +58,7 @@ public class AccountService implements Abonent, Runnable {
         else {
             clients.put(user, null);
             msys.sendMessage(new LoginAnswer(addressBack, true, null));
-            System.out.println("login: success(" + user + ")");
+            System.out.println("login: success (" + user + ")");
         }
     }
 
@@ -67,10 +68,26 @@ public class AccountService implements Abonent, Runnable {
 
         if (clients.containsKey(user)) {
             clients.put(user, socket);
-            System.out.println("setSocket: success(" + user + ")");
+            System.out.println("setSocket: success (" + user + ")");
         }
         else {
-            System.out.println("setSocket: Unknown user(" + user + ")");
+            System.out.println("setSocket: Unknown user (" + user + ")");
+        }
+    }
+
+    public void sendMessage(SendQuery msg) {
+        String whom = msg.getWhom();
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("from", msg.getFrom());
+        data.put("message", msg.getMessage());
+
+        Socket socketWhom = this.clients.get(whom);
+        if (socketWhom != null) {
+            socketWhom.sendToClient("message", data);
+        }
+        else {
+            System.out.println("AccountServer.sendMessage: " + "Unknown whom (" + whom + ")");
         }
     }
 }

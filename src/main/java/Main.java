@@ -31,7 +31,7 @@ public class Main
             server.join();
         }
         catch (Exception e) {
-            System.out.println("Error" + e);
+            System.out.println("Error" + e.toString());
         }
     }
 

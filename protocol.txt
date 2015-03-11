@@ -1,11 +1,14 @@
 Client {
     login: {
         nickname: string
-    }
+    },
 
-    message: {
-        whom: string
-        message: string
+    {
+        action: "message",
+        data: {
+             whom: string,
+             message: string
+        }
     }
 }
 
@@ -14,9 +17,14 @@ Server {
         status: bool,
         clients: []
     }
-    message: {
-        from: string,
-        text: string,
+
+
+    {
+        action: "message",
+        data: {
+            from: string,
+            text: string,
+        }
     }
 }
 

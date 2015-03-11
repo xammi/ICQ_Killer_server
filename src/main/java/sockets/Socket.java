@@ -1,5 +1,7 @@
 package sockets;
 
+import msgsystem.MessageSystem;
+import msgsystem.messages.SendQuery;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
@@ -14,11 +16,27 @@ import java.util.Map;
  */
 @WebSocket
 public class Socket {
+    private String nickname;
     private Session session;
 
+    public Socket(String nickname) {
+        this.nickname = nickname;
+    }
+
     @OnWebSocketMessage
-    public void onMessage(String message) {
-        JSONObject json = new JSONObject(message);
+    public void onMessage(String msg) {
+        MessageSystem msys = MessageSystem.getInstance();
+        JSONObject json = new JSONObject(msg);
+
+        String action = json.getString("action");
+        JSONObject data = json.getJSONObject("data");
+
+        if (action.equals("message")) {
+            String whom = data.getString("whom");
+            String message = data.getString("message");
+
+            msys.sendMessage(new SendQuery(this.nickname, whom, message));
+        }
     }
 
     @OnWebSocketConnect
@@ -29,13 +47,12 @@ public class Socket {
     public void sendToClient(String action, Map<String, Object> data) {
         JSONObject json = new JSONObject();
         json.put("action", action);
-        json.put("status", "OK");
         json.put("data", data);
 
         try {
             session.getRemote().sendString(json.toString());
         } catch (Exception e) {
-            System.out.print(e.toString());
+            System.out.print("sendToClient: " + e.toString());
         }
     }
 
