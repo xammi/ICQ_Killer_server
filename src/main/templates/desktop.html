@@ -7,12 +7,38 @@
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css"/>
 </head>
 <body>
-    <div id="others"></div>
-    <div id="history"></div>
-    <div id="enter"></div>
+    <div class="container">
+
+        <div id="auth" class="row">
+            <h3>Lets talk!</h3>
+            <form action="/login" method="POST" class="form-inline">
+                <div class="form-group">
+                    <label for="nickname">Nickname:</label>
+                    <input id="nickname" name="nickname" type="text"/>
+                </div>
+                <button type="submit" class="btn">Login</button>
+            </form>
+        </div>
+
+        <br/>
+
+        <div class="row hidden">
+            <div id="others" class="col-md-3">
+
+            </div>
+            <div class="container col-md-9">
+                <div id="history">
+
+                </div>
+                <div id="enter">
+
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="/js/desktop.js"></script>
-    <script src="/bootstrap/js/bootstrap.min.js"></script>
     <script src="/js/jquery-2.1.3.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>

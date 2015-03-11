@@ -1,3 +1,19 @@
 body {
     background-color: #AAA;
 }
+
+.container {
+    height: 100%;
+    width: 100%;
+}
+
+#others {
+    border-right: black solid 1px;
+}
+
+#history {
+}
+
+#enter {
+    border-top: black solid 1px;
+}
