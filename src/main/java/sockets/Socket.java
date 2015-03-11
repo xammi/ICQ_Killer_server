@@ -18,14 +18,15 @@ import java.util.Map;
 public class Socket {
     private String nickname;
     private Session session;
+    private MessageSystem msys;
 
     public Socket(String nickname) {
+        this.msys = MessageSystem.getInstance();
         this.nickname = nickname;
     }
 
     @OnWebSocketMessage
     public void onMessage(String msg) {
-        MessageSystem msys = MessageSystem.getInstance();
         JSONObject json = new JSONObject(msg);
 
         String action = json.getString("action");

@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
  * Created by max on 11.03.15.
  */
 public abstract class Servlet extends HttpServlet implements Abonent {
+
+    protected static final String TEMPLATES_DIR = "src/main/templates/";
     protected static final String OK = "1";
     protected static final String FAILED = "-1";
 
@@ -39,7 +41,7 @@ public abstract class Servlet extends HttpServlet implements Abonent {
         }
     }
 
-    public void resume() {
+    protected void resume() {
         this.isWaiting = false;
     }
 }
