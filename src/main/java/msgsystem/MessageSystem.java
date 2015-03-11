@@ -28,7 +28,7 @@ public class MessageSystem {
 
     public void register(Abonent abonent) {
         String address = abonent.getAddress();
-        this.messages.put(address, new ConcurrentLinkedQueue<>());
+        this.messages.put(address, new ConcurrentLinkedQueue<AbstractMsg>());
     }
 
     public boolean sendMessage(AbstractMsg message) {

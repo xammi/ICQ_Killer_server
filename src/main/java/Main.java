@@ -7,6 +7,7 @@ import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import services.AccountService;
+import servlets.AdminServlet;
 import servlets.LoginServlet;
 import sockets.SocketServlet;
 
@@ -45,10 +46,12 @@ public class Main
     private static ServletContextHandler createServlets() {
         LoginServlet loginServlet = new LoginServlet();
         SocketServlet socketServlet = new SocketServlet();
+        AdminServlet adminServlet = new AdminServlet();
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.addServlet(new ServletHolder(socketServlet), "/send");
         context.addServlet(new ServletHolder(loginServlet), "/login");
+        context.addServlet(new ServletHolder(adminServlet), "/admin");
         return context;
     }
 }
