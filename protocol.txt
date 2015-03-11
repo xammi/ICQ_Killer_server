@@ -14,7 +14,7 @@ Client {
 
 Server {
     logged-in: {
-        status: bool,
+        status: OK | FAIL,
         clients: []
     }
 

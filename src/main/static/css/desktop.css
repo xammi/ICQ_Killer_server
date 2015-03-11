@@ -2,9 +2,20 @@ body {
     background-color: #AAA;
 }
 
-.container {
-    height: 100%;
-    width: 100%;
+#header {
+    font-size: 20pt;
+}
+
+#messanger {
+    display: none;
+}
+
+#overlay {
+    display: block;
+}
+
+#overlay .alert {
+    display: none;
 }
 
 #others {
@@ -16,4 +27,8 @@ body {
 
 #enter {
     border-top: black solid 1px;
+}
+
+#logout {
+    display: none;
 }

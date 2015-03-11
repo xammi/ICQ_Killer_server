@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServlet;
 public abstract class Servlet extends HttpServlet implements Abonent {
 
     protected static final String TEMPLATES_DIR = "src/main/templates/";
-    protected static final String OK = "1";
-    protected static final String FAILED = "-1";
+    protected static final String OK = "OK";
+    protected static final String FAILED = "FAIL";
 
     protected MessageSystem msys;
     protected final String address = AddressService.getServletAddress();
