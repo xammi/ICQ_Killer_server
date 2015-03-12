@@ -49,15 +49,15 @@ public class AccountService implements Abonent, Runnable {
         String user = query.getUser();
 
         if (clients.containsKey(user)) {
-            Set<String> others = clients.keySet();
-            others.remove(user);
-
-            msys.sendMessage(new LoginAnswer(addressBack, true, others));
+            msys.sendMessage(new LoginAnswer(addressBack, false, null));
             System.out.println("login: User already exists (" + user + ")");
         }
         else {
+            Set<String> others = clients.keySet();
+            others.remove(user);
+
             clients.put(user, null);
-            msys.sendMessage(new LoginAnswer(addressBack, true, null));
+            msys.sendMessage(new LoginAnswer(addressBack, true, others));
             System.out.println("login: success (" + user + ")");
         }
     }
