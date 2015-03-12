@@ -3,10 +3,7 @@ package services;
 import msgsystem.Abonent;
 import msgsystem.AddressService;
 import msgsystem.MessageSystem;
-import msgsystem.messages.LoginAnswer;
-import msgsystem.messages.LoginQuery;
-import msgsystem.messages.SendQuery;
-import msgsystem.messages.SetSocket;
+import msgsystem.messages.*;
 import sockets.Socket;
 
 import java.lang.Thread;
@@ -63,6 +60,25 @@ public class AccountService implements Abonent, Runnable {
         }
     }
 
+    public void logout(LogoutQuery query) {
+        String user = query.getUser();
+
+        if (clients.containsKey(user)) {
+            clients.remove(user);
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("user", user);
+            for (Socket socket : clients.values()) {
+                socket.sendToClient("user_went_out", data);
+            }
+
+            System.out.println("logout: success (" + user + ")");
+        }
+        else {
+            System.out.println("logout: Unknown user (" + user + ")");
+        }
+    }
+
     public void setSocket(SetSocket msg) {
         String user = msg.getUser();
         Socket socket = msg.getSocket();
@@ -78,13 +94,13 @@ public class AccountService implements Abonent, Runnable {
 
     public void sendMessage(SendQuery msg) {
         String whom = msg.getWhom();
-
-        Map<String, Object> data = new HashMap<>();
-        data.put("from", msg.getFrom());
-        data.put("message", msg.getMessage());
-
         Socket socketWhom = this.clients.get(whom);
+
         if (socketWhom != null) {
+            Map<String, Object> data = new HashMap<>();
+            data.put("from", msg.getFrom());
+            data.put("message", msg.getMessage());
+
             socketWhom.sendToClient("message", data);
         }
         else {

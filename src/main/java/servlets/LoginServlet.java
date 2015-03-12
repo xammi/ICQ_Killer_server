@@ -25,6 +25,10 @@ public class LoginServlet extends Servlet {
             throws ServletException, IOException
     {
         String user = request.getParameter("nickname");
+        if (user == null) {
+            return;
+        }
+
         msys.sendMessage(new LoginQuery(getAddress(), user));
 
         waitForAnswer();

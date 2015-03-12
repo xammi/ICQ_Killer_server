@@ -3,6 +3,10 @@ Client {
         nickname: string
     },
 
+    logout: {
+        nickname: string
+    }
+
     {
         action: "handshake",
         data: {
@@ -31,6 +35,13 @@ Server {
         data: {
             from: string,
             text: string,
+        }
+    }
+
+    {
+        action: "user_went_out",
+        data: {
+            user: string,
         }
     }
 }

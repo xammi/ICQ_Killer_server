@@ -3,6 +3,7 @@ package sockets;
 import msgsystem.Abonent;
 import msgsystem.AddressService;
 import msgsystem.MessageSystem;
+import msgsystem.messages.LogoutQuery;
 import msgsystem.messages.SendQuery;
 import msgsystem.messages.SetSocket;
 import org.eclipse.jetty.websocket.api.Session;
@@ -46,7 +47,7 @@ public class Socket implements Abonent {
             String whom = data.getString("whom");
             String message = data.getString("message");
 
-            msys.sendMessage(new SendQuery(this.nickname, whom, message));
+            msys.sendMessage(new SendQuery(nickname, whom, message));
         }
     }
 
@@ -69,7 +70,9 @@ public class Socket implements Abonent {
 
     @OnWebSocketClose
     public void onClose(int statusCode, String reason) {
-
+        if (nickname != null) {
+            msys.sendMessage(new LogoutQuery(getAddress(), nickname));
+        }
     }
 
     public void registerNickname(String nickname) {

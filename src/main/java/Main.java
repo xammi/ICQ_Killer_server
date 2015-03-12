@@ -10,6 +10,7 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import services.AccountService;
 import servlets.DesktopServlet;
 import servlets.LoginServlet;
+import servlets.LogoutServlet;
 import servlets.Servlet;
 import sockets.SocketServlet;
 
@@ -48,12 +49,14 @@ public class Main
 
     private static ServletContextHandler createServlets() {
         Servlet loginServlet = new LoginServlet();
+        Servlet logoutServlet = new LogoutServlet();
         Servlet desktopServlet = new DesktopServlet();
         SocketServlet socketServlet = new SocketServlet();
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.addServlet(new ServletHolder(socketServlet), "/send");
         context.addServlet(new ServletHolder(loginServlet), "/login");
+        context.addServlet(new ServletHolder(logoutServlet), "/logout");
         context.addServlet(new ServletHolder(desktopServlet), "/desktop");
         return context;
     }
