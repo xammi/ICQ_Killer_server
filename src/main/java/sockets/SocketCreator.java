@@ -1,11 +1,10 @@
 package sockets;
 
-import msgsystem.MessageSystem;
-import msgsystem.messages.SetSocket;
 import org.eclipse.jetty.websocket.servlet.ServletUpgradeRequest;
 import org.eclipse.jetty.websocket.servlet.ServletUpgradeResponse;
 import org.eclipse.jetty.websocket.servlet.WebSocketCreator;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -15,18 +14,21 @@ public class SocketCreator implements WebSocketCreator {
 
     @Override
     public Object createWebSocket(ServletUpgradeRequest req, ServletUpgradeResponse resp) {
-        HttpSession session = req.getHttpServletRequest().getSession();
+        HttpServletRequest request = req.getHttpServletRequest();
 
-        if (session != null) {
-            String user = session.getAttribute("nickname").toString();
+        if (request != null) {
+            HttpSession session = request.getSession();
 
-            if (user != null) {
-                MessageSystem msys = MessageSystem.getInstance();
-                Socket socket = new Socket(user);
-                msys.sendMessage(new SetSocket(user, socket));
-                return socket;
+            if (session != null) {
+                String user = session.getAttribute("nickname").toString();
+
+                if (user != null) {
+                    Socket socket = new Socket(user);
+                    socket.registerNickname(user);
+                    return socket;
+                }
             }
         }
-        return null;
+        return new Socket(null);
     }
 }

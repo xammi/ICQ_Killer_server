@@ -1,7 +1,10 @@
 package sockets;
 
+import msgsystem.Abonent;
+import msgsystem.AddressService;
 import msgsystem.MessageSystem;
 import msgsystem.messages.SendQuery;
+import msgsystem.messages.SetSocket;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
@@ -15,13 +18,16 @@ import java.util.Map;
  * Created by max 10.03.15
  */
 @WebSocket
-public class Socket {
+public class Socket implements Abonent {
     private String nickname;
     private Session session;
+
+    protected final String address = AddressService.getSocketAddress();
     private MessageSystem msys;
 
     public Socket(String nickname) {
         this.msys = MessageSystem.getInstance();
+        this.msys.register(this);
         this.nickname = nickname;
     }
 
@@ -32,7 +38,11 @@ public class Socket {
         String action = json.getString("action");
         JSONObject data = json.getJSONObject("data");
 
-        if (action.equals("message")) {
+        if (action.equals("handshake")) {
+            String user = data.getString("user");
+            registerNickname(user);
+        }
+        else if (action.equals("message")) {
             String whom = data.getString("whom");
             String message = data.getString("message");
 
@@ -60,5 +70,15 @@ public class Socket {
     @OnWebSocketClose
     public void onClose(int statusCode, String reason) {
 
+    }
+
+    public void registerNickname(String nickname) {
+        this.nickname = nickname;
+        msys.sendMessage(new SetSocket(getAddress(), nickname, this));
+    }
+
+    @Override
+    public String getAddress() {
+        return this.address;
     }
 }

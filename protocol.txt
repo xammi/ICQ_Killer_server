@@ -4,6 +4,13 @@ Client {
     },
 
     {
+        action: "handshake",
+        data: {
+            nickname: string
+        }
+    }
+
+    {
         action: "message",
         data: {
              whom: string,
@@ -15,7 +22,7 @@ Client {
 Server {
     logged-in: {
         status: OK | FAIL,
-        clients: []
+        clients: string []
     }
 
 

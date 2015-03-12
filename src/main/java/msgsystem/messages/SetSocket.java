@@ -13,8 +13,8 @@ public class SetSocket extends AbstractMsg {
     private final Socket socket;
     private final String user;
 
-    public SetSocket(String user, Socket socket) {
-        super(null, AddressService.ACCOUNT_SERVICE);
+    public SetSocket(String addressFrom, String user, Socket socket) {
+        super(addressFrom, AddressService.ACCOUNT_SERVICE);
         this.socket = socket;
         this.user = user;
     }

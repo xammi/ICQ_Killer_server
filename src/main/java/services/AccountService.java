@@ -11,6 +11,7 @@ import sockets.Socket;
 
 import java.lang.Thread;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -53,7 +54,7 @@ public class AccountService implements Abonent, Runnable {
             System.out.println("login: User already exists (" + user + ")");
         }
         else {
-            Set<String> others = clients.keySet();
+            Set<String> others = new HashSet<>(clients.keySet());
             others.remove(user);
 
             clients.put(user, null);

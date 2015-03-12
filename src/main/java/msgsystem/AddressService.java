@@ -14,4 +14,8 @@ public class AddressService {
     public static String getServletAddress() {
          return "servlet_" + idCounter.getAndIncrement();
     }
+
+    public static String getSocketAddress() {
+        return "socket_" + idCounter.getAndIncrement();
+    }
 }
