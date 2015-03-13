@@ -20,11 +20,11 @@ public class SocketCreator implements WebSocketCreator {
             HttpSession session = request.getSession();
 
             if (session != null) {
-                String user = session.getAttribute("nickname").toString();
+                Object user = session.getAttribute("nickname");
 
                 if (user != null) {
-                    Socket socket = new Socket(user);
-                    socket.registerNickname(user);
+                    Socket socket = new Socket(user.toString());
+                    socket.registerNickname(user.toString());
                     return socket;
                 }
             }
