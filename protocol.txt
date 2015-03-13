@@ -46,9 +46,16 @@ Server {
     }
 
     {
+        action: "user_come_in",
+        data: {
+            nickname: string,
+        }
+    }
+
+    {
         action: "user_went_out",
         data: {
-            user: string,
+            nickname: string,
         }
     }
 }

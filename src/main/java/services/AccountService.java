@@ -67,9 +67,10 @@ public class AccountService implements Abonent, Runnable {
             clients.remove(user);
 
             Map<String, Object> data = new HashMap<>();
-            data.put("user", user);
+            data.put("nickname", user);
             for (Socket socket : clients.values()) {
-                socket.sendToClient("user_went_out", data);
+                if (socket != null)
+                    socket.sendToClient("user_went_out", data);
             }
 
             System.out.println("logout: success (" + user + ")");
@@ -85,6 +86,14 @@ public class AccountService implements Abonent, Runnable {
 
         if (clients.containsKey(user)) {
             clients.put(user, socket);
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("nickname", user);
+            for (Socket other : clients.values()) {
+                if (other != null)
+                    other.sendToClient("user_come_in", data);
+            }
+
             System.out.println("setSocket: success (" + user + ")");
         }
         else {
