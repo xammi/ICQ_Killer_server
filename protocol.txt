@@ -1,9 +1,13 @@
 Client {
-    login: {
+    /login (POST): {
         nickname: string
     },
 
-    logout: {
+    /logout (GET): {
+        nickname: string
+    }
+
+    /list (GET): {
         nickname: string
     }
 
@@ -24,11 +28,14 @@ Client {
 }
 
 Server {
-    logged-in: {
+    /login: {
         status: OK | FAIL,
         clients: string []
     }
 
+    /list {
+        clients: string []
+    }
 
     {
         action: "message",

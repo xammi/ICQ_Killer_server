@@ -14,11 +14,13 @@ import java.io.IOException;
 public class LogoutServlet extends Servlet {
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
         String user = request.getParameter("nickname");
         if (user == null) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            System.out.println("logout: Unknown user");
             return;
         }
 

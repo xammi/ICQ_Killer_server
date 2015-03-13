@@ -1,5 +1,7 @@
 package servlets;
 
+import msgsystem.messages.ListAnswer;
+import msgsystem.messages.ListQuery;
 import msgsystem.messages.LoginAnswer;
 import msgsystem.messages.LoginQuery;
 import org.json.JSONObject;
@@ -13,39 +15,27 @@ import java.io.PrintWriter;
 import java.util.Set;
 
 /**
- * Created by max on 10.03.15.
+ * Created by max on 13.03.15.
  */
-public class LoginServlet extends Servlet {
-
-    private boolean successLogin;
+public class ListServlet extends Servlet {
     private Set<String> others;
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
         String user = request.getParameter("nickname");
         if (user == null) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            System.out.println("login: Unknown user");
+            System.out.println("list: Unknown user");
             return;
         }
 
-        msys.sendMessage(new LoginQuery(getAddress(), user));
+        msys.sendMessage(new ListQuery(getAddress(), user));
 
         waitForAnswer();
 
         JSONObject json = new JSONObject();
-        if (this.successLogin) {
-
-            HttpSession session = request.getSession(true);
-            session.setAttribute("nickname", user);
-
-            json.put("status", OK);
-        }
-        else {
-            json.put("status", FAILED);
-        }
         json.put("clients", this.others);
 
         response.setContentType("application/json; charset=UTF-8");
@@ -54,8 +44,7 @@ public class LoginServlet extends Servlet {
         printout.flush();
     }
 
-    public void recieveAnswer(LoginAnswer msg) {
-        this.successLogin = msg.getStatus();
+    public void recieveAnswer(ListAnswer msg) {
         this.others = msg.getOthers();
         resume();
     }

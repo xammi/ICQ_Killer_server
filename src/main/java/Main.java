@@ -8,10 +8,7 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import services.AccountService;
-import servlets.DesktopServlet;
-import servlets.LoginServlet;
-import servlets.LogoutServlet;
-import servlets.Servlet;
+import servlets.*;
 import sockets.SocketServlet;
 
 import java.util.concurrent.ExecutorService;
@@ -49,6 +46,7 @@ public class Main
 
     private static ServletContextHandler createServlets() {
         Servlet loginServlet = new LoginServlet();
+        Servlet listServlet = new ListServlet();
         Servlet logoutServlet = new LogoutServlet();
         Servlet desktopServlet = new DesktopServlet();
         SocketServlet socketServlet = new SocketServlet();
@@ -57,6 +55,7 @@ public class Main
         context.addServlet(new ServletHolder(socketServlet), "/send");
         context.addServlet(new ServletHolder(loginServlet), "/login");
         context.addServlet(new ServletHolder(logoutServlet), "/logout");
+        context.addServlet(new ServletHolder(listServlet), "/list");
         context.addServlet(new ServletHolder(desktopServlet), "/desktop");
         return context;
     }
