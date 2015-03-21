@@ -89,8 +89,11 @@ public class AccountService implements Abonent, Runnable {
 
             Map<String, Object> data = new HashMap<>();
             data.put("nickname", user);
-            for (Socket other : clients.values()) {
-                if (other != null)
+
+            for (Map.Entry<String, Socket> entry : clients.entrySet()) {
+                Socket other = entry.getValue();
+
+                if (other != null && ! entry.getKey().equals(user))
                     other.sendToClient("user_come_in", data);
             }
 

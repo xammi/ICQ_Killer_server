@@ -32,12 +32,15 @@ $(document).ready(function () {
 
             this.ws = new WebSocket(this.SOCKET_URL);
 
+            var self = this;
             this.ws.onopen = function (event) {
-                this.sendMessage({
-                    action: 'handshake',
-                    data: {nickname: nickname}
-                });
-            }.bind(this);
+                setTimeout(function () {
+                    self.sendMessage({
+                        action: 'handshake',
+                        data: {nickname: nickname}
+                    });
+                }, 100);
+            };
 
             this.ws.onclose = function (event) {};
 
@@ -63,7 +66,23 @@ $(document).ready(function () {
         },
 
         handle: function (action, data) {
+            if (action === 'message') {
+                var text = data.message;
+                var from = data.from;
+                history.append('<div class="alert alert-info">' + from + ': ' + text + '</div>');
+            }
+            else if (action === 'user_come_in') {
+                var nickname = data.nickname;
+                others.append('<a href="#" class="list-group-item">' + nickname + '</a>');
 
+                if (others.children('.list-group-item').length === 1) {
+                    others.children('.list-group-item').first().addClass('active');
+                }
+            }
+            else if (action === 'user_went_out') {
+                var nickname = data.nickname;
+                $("a .list-group-item").remove( ":contains('"+ nickname +"')" );
+            }
         }
     };
 
@@ -160,14 +179,14 @@ $(document).ready(function () {
         SocketMan.sendMessage({
             action: 'message',
             data: {
-                'from': nickname,
+                from: nickname,
                 whom: whom,
                 message: text
             }
         });
 
         message.val('');
-        history.append('<div class="well">' + text + '</div>');
+        history.append('<div class="alert alert-warning">' + nickname + ': ' + text + '</div>');
     }
 
     send_form.submit(function (event) {
