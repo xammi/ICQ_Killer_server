@@ -40,7 +40,7 @@ public class Socket implements Abonent {
         JSONObject data = json.getJSONObject("data");
 
         if (action.equals("handshake")) {
-            String user = data.getString("user");
+            String user = data.getString("nickname");
             registerNickname(user);
         }
         else if (action.equals("message")) {
