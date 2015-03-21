@@ -1,9 +1,15 @@
 body {
     background-color: #AAA;
+    padding-bottom: 70px;
 }
 
 #header {
-    font-size: 20pt;
+    font-size: 22pt;
+}
+
+#me {
+    font-size: 22pt;
+    display: none;
 }
 
 #messanger {
@@ -16,19 +22,25 @@ body {
 
 #overlay .alert {
     display: none;
+    margin: 0;
 }
 
 #others {
-    border-right: black solid 1px;
 }
 
 #history {
 }
 
 #enter {
-    border-top: black solid 1px;
+    display: none;
 }
 
-#logout {
+#logout-form {
     display: none;
+}
+
+.navbar-form .form-control {
+    display: inline-block;
+    width: 100%;
+    vertical-align: middle;
 }

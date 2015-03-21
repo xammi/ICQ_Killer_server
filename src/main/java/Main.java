@@ -2,6 +2,8 @@
  * Created by max on 10.03.15.
  */
 
+//import loggers.ImmediateLogger;
+//import loggers.Logger;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
@@ -17,6 +19,7 @@ import java.util.concurrent.Executors;
 public class Main
 {
     private static final String STATIC_DIR = "src/main/static/";
+//    private static final Logger logger = ImmediateLogger.getInstance("Main");
 
     public static void main(String[] args) throws Exception{
         try {
@@ -29,10 +32,15 @@ public class Main
 
             Server server = new Server(serverPort);
             server.setHandler(handlers);
+
+//            logger.log("Server was started successfully");
+
             server.start();
             server.join();
         }
         catch (Exception e) {
+//            logger.log("Error" + e.toString());
+
             System.out.println("Error" + e.toString());
         }
     }
