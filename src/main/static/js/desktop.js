@@ -171,8 +171,9 @@ $(document).ready(function () {
 
     function send_message() {
         var nickname = me.html();
-        var whom = others.children('.active').html();
         if (nickname === '') return;
+        var whom = others.children('.active').html();
+        if (whom === '') return;
         var text = message.val();
         if (message === '') return;
 
@@ -192,5 +193,51 @@ $(document).ready(function () {
     send_form.submit(function (event) {
         event.preventDefault();
         send_message();
+    });
+
+    //------------------------------------ upload ------------------------------
+
+    var upload_form = $('#upload-form');
+    var chooser = $('#chooser');
+    var upload = $('#upload');
+
+    upload.css('opacity','0');
+
+    chooser.click(function (event) {
+        event.preventDefault();
+        upload.trigger('click');
+    });
+
+    upload.change(function (event) {
+        event.preventDefault();
+        upload_form.submit();
+    });
+
+    upload_form.submit(function(event) {
+        event.preventDefault();
+
+        var nickname = me.html();
+        if (nickname === '') return;
+        var whom = others.children('.active').html();
+        if (whom === '') return;
+
+        var file = new FormData($(this)[0]);
+
+        $.ajax({
+            method: 'POST',
+            url: '/upload',
+            data: {'nickname': nickname, whom: whom, file: file},
+        }).done(function (response) {
+            if (response.status === 'OK') {
+                history.append('<div class="alert alert-warning">' + nickname + ': ' + response.file + '</div>');
+            }
+            else {
+                showAlert('danger', response.error);
+            }
+        }).fail(function (jqXHR, textStatus) {
+            showAlert('danger', textStatus);
+        }).always(function () {
+            upload.val(null);
+        });
     });
 });

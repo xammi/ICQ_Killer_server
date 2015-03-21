@@ -11,6 +11,12 @@ Client {
         nickname: string
     }
 
+    /upload (POST): {
+        nickname: string,
+        whom: string,
+        file: string
+    }
+
     {
         action: "handshake",
         data: {
@@ -35,6 +41,11 @@ Server {
 
     /list {
         clients: string []
+    }
+
+    /upload {
+        status: OK | FAIL,
+        file: string
     }
 
     {

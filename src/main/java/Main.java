@@ -57,6 +57,7 @@ public class Main
         Servlet listServlet = new ListServlet();
         Servlet logoutServlet = new LogoutServlet();
         Servlet desktopServlet = new DesktopServlet();
+        Servlet uploadServlet = new UploadServlet();
         SocketServlet socketServlet = new SocketServlet();
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
@@ -65,6 +66,7 @@ public class Main
         context.addServlet(new ServletHolder(logoutServlet), "/logout");
         context.addServlet(new ServletHolder(listServlet), "/list");
         context.addServlet(new ServletHolder(desktopServlet), "/desktop");
+        context.addServlet(new ServletHolder(uploadServlet), "/upload");
         return context;
     }
 
