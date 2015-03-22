@@ -1,7 +1,7 @@
 package msgsystem.messages;
 
 import msgsystem.AddressService;
-import services.AccountService;
+import accounts.AccountService;
 import msgsystem.Abonent;
 
 /**

@@ -2,7 +2,7 @@ package msgsystem.messages;
 
 import msgsystem.Abonent;
 import msgsystem.AddressService;
-import services.AccountService;
+import accounts.AccountService;
 
 /**
  * Created by max on 12.03.15.

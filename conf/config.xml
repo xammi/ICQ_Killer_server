@@ -1,0 +1,15 @@
+<server>
+
+    <section name="general">
+        <option name="port" type="int">8082</option>
+    </section>
+
+    <section name="logging">
+        <option name="strategy" type="string">immediate</option>
+    </section>
+
+    <section name="static">
+        <option name="static_dir" type="string">src/main/static</option>
+    </section>
+
+</server>

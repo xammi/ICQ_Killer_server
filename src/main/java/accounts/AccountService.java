@@ -1,4 +1,4 @@
-package services;
+package accounts;
 
 import msgsystem.Abonent;
 import msgsystem.AddressService;

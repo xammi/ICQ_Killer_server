@@ -2,7 +2,7 @@ package msgsystem.messages;
 
 import msgsystem.Abonent;
 import msgsystem.AddressService;
-import services.AccountService;
+import accounts.AccountService;
 import sockets.Socket;
 
 /**

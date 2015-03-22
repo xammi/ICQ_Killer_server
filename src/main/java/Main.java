@@ -4,12 +4,13 @@
 
 //import loggers.ImmediateLogger;
 //import loggers.Logger;
+import confparser.Config;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import services.AccountService;
+import accounts.AccountService;
 import servlets.*;
 import sockets.SocketServlet;
 
@@ -18,7 +19,7 @@ import java.util.concurrent.Executors;
 
 public class Main
 {
-    private static final String STATIC_DIR = "src/main/static/";
+    private static final Config config = Config.getInstance();
 //    private static final Logger logger = ImmediateLogger.getInstance("Main");
 
     public static void main(String[] args) throws Exception{
@@ -28,7 +29,7 @@ public class Main
             ServletContextHandler context = createServlets();
             HandlerList handlers = createHandlers(context);
 
-            int serverPort = 8082;
+            int serverPort = config.getInt("general", "port");
 
             Server server = new Server(serverPort);
             server.setHandler(handlers);
@@ -42,6 +43,7 @@ public class Main
 //            logger.log("Error" + e.toString());
 
             System.out.println("Error" + e.toString());
+            e.printStackTrace();
         }
     }
 
@@ -73,6 +75,8 @@ public class Main
     private static HandlerList createHandlers(ServletContextHandler context) {
         ResourceHandler resourceHandler = new ResourceHandler();
         resourceHandler.setDirectoriesListed(false);
+
+        final String STATIC_DIR = config.getString("static", "static_dir");
         resourceHandler.setResourceBase(STATIC_DIR);
 
         HandlerList handlers = new HandlerList();
