@@ -93,7 +93,7 @@ $(document).ready(function () {
         $.ajax({
             method: 'POST',
             url: '/login',
-            data: {'nickname': nickname}
+            data: {nickname: nickname}
         }).done(function (response) {
             if (response.status == 'OK') {
                 me.html(nickname);
@@ -136,7 +136,7 @@ $(document).ready(function () {
         $.ajax({
             method: 'GET',
             url: '/logout',
-            data: {'nickname': nickname}
+            data: {nickname: nickname}
         }).done(function (response) {
             showAlert('success', 'Come back soon!');
         }).fail(function (jqXHR, textStatus) {
@@ -187,7 +187,7 @@ $(document).ready(function () {
         });
 
         message.val('');
-        history.append('<div class="alert alert-warning">' + nickname + ': ' + text + '</div>');
+        history.append('<div class="alert alert-warning">' + whom + ': ' + text + '</div>');
     }
 
     send_form.submit(function (event) {
@@ -221,15 +221,22 @@ $(document).ready(function () {
         var whom = others.children('.active').html();
         if (whom === '') return;
 
-        var file = new FormData($(this)[0]);
+        var data = new FormData();
+        $.each($('#upload')[0].files, function(i, file) {
+            data.append('file-'+i, file);
+        });
+        data.append('nickname', nickname);
+        data.append('whom', whom);
 
         $.ajax({
             method: 'POST',
             url: '/upload',
-            data: {'nickname': nickname, whom: whom, file: file},
+            processData: false,
+            contentType: false,
+            data: data
         }).done(function (response) {
             if (response.status === 'OK') {
-                history.append('<div class="alert alert-warning">' + nickname + ': ' + response.file + '</div>');
+                history.append('<div class="alert alert-warning">' + whom + ': ' + response.file + '</div>');
             }
             else {
                 showAlert('danger', response.error);

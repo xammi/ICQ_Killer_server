@@ -13,6 +13,7 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import accounts.AccountService;
 import servlets.*;
 import sockets.SocketServlet;
+import javax.servlet.MultipartConfigElement;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -68,7 +69,11 @@ public class Main
         context.addServlet(new ServletHolder(logoutServlet), "/logout");
         context.addServlet(new ServletHolder(listServlet), "/list");
         context.addServlet(new ServletHolder(desktopServlet), "/desktop");
-        context.addServlet(new ServletHolder(uploadServlet), "/upload");
+
+        ServletHolder uploadHolder = new ServletHolder(uploadServlet);
+        uploadHolder.getRegistration().setMultipartConfig(new MultipartConfigElement("media"));
+        context.addServlet(uploadHolder, "/upload");
+
         return context;
     }
 
