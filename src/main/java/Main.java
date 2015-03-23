@@ -61,6 +61,7 @@ public class Main
         Servlet logoutServlet = new LogoutServlet();
         Servlet desktopServlet = new DesktopServlet();
         Servlet uploadServlet = new UploadServlet();
+        Servlet downloadServlet = new DownloadServlet();
         SocketServlet socketServlet = new SocketServlet();
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
@@ -73,6 +74,8 @@ public class Main
         ServletHolder uploadHolder = new ServletHolder(uploadServlet);
         uploadHolder.getRegistration().setMultipartConfig(new MultipartConfigElement("media"));
         context.addServlet(uploadHolder, "/upload");
+
+        context.addServlet(new ServletHolder(downloadServlet), "/download");
 
         return context;
     }

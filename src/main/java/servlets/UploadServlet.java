@@ -4,14 +4,11 @@ import msgsystem.messages.SendQuery;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Collection;
 
 /**
  * Created by max on 21.03.15.
@@ -46,7 +43,7 @@ public class UploadServlet extends Servlet {
                 String fileName = filePart.getSubmittedFileName();
                 filePart.write(fileName);
 
-                String link = request.getHeader("Referer") + "download/?file=" + fileName;
+                String link = "http://" + request.getHeader("Host") + "/download?file=" + fileName;
                 String message = "File was uploaded: <a href=\"" + link + "\">" + fileName + "</a>";
                 msys.sendMessage(new SendQuery(from, whom, message));
 

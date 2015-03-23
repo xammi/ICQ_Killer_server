@@ -11,6 +11,9 @@
 
     <properties>
         <jettyVersion>9.2.7.v20150116</jettyVersion>
+        <configuration>
+            <webDefaultXml>conf/mime-types.xml</webDefaultXml>
+        </configuration>
     </properties>
 
     <dependencies>
