@@ -15,6 +15,8 @@ import java.io.PrintWriter;
  */
 public class UploadServlet extends Servlet {
 
+    private static final String protocol = config.getString("general", "protocol");
+
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
@@ -43,7 +45,14 @@ public class UploadServlet extends Servlet {
                 String fileName = filePart.getSubmittedFileName();
                 filePart.write(fileName);
 
-                String link = "http://" + request.getHeader("Host") + "/download?file=" + fileName;
+                String link = "http://" + request.getHeader("Host");
+                if (protocol.equals("SOAP")) {
+                    link += "/download?file=" + fileName;
+                }
+                else if (protocol.equals("REST")) {
+                    link += "/file/read?file=" + fileName;
+                }
+
                 String message = "File was uploaded: <a href=\"" + link + "\">" + fileName + "</a>";
                 msys.sendMessage(new SendQuery(from, whom, message));
 
