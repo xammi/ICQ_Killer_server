@@ -25,7 +25,7 @@ $(document).ready(function () {
     var history = $('#history');
 
     var SocketMan = {
-        SOCKET_URL: "ws://127.0.0.1:8082/send",
+        SOCKET_URL: Protocol.getURL('socket'),
 
         setSocket: function(nickname) {
             if (this.ws) return;
@@ -91,8 +91,8 @@ $(document).ready(function () {
         if (nickname === '') return;
 
         $.ajax({
-            method: 'POST',
-            url: '/login',
+            method: Protocol.getMethod('login'),
+            url: Protocol.getURL('login'),
             data: {nickname: nickname}
         }).done(function (response) {
             if (response.status == 'OK') {
@@ -134,8 +134,8 @@ $(document).ready(function () {
         if (nickname === '') return;
 
         $.ajax({
-            method: 'GET',
-            url: '/logout',
+            method: Protocol.getMethod('logout'),
+            url: Protocol.getURL('logout'),
             data: {nickname: nickname}
         }).done(function (response) {
             showAlert('success', 'Come back soon!');
@@ -229,8 +229,8 @@ $(document).ready(function () {
         data.append('whom', whom);
 
         $.ajax({
-            method: 'POST',
-            url: '/upload',
+            method: Protocol.getMethod('upload'),
+            url: Protocol.getURL('upload'),
             processData: false,
             contentType: false,
             data: data

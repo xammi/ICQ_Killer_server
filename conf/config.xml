@@ -2,6 +2,7 @@
 
     <section name="general">
         <option name="port" type="int">8082</option>
+        <option name="protocol" type="string">REST</option>
     </section>
 
     <section name="logging">

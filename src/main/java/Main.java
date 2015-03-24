@@ -9,11 +9,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
 import accounts.AccountService;
-import servlets.*;
-import sockets.SocketServlet;
-import javax.servlet.MultipartConfigElement;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -27,7 +23,8 @@ public class Main
         try {
             launchServices();
 
-            ServletContextHandler context = createServlets();
+            ServletManager servletManager = new ServletManager();
+            ServletContextHandler context = servletManager.configure();
             HandlerList handlers = createHandlers(context);
 
             int serverPort = config.getInt("general", "port");
@@ -53,31 +50,6 @@ public class Main
 
         ExecutorService threadPool = Executors.newFixedThreadPool(1);
         threadPool.submit(accountService);
-    }
-
-    private static ServletContextHandler createServlets() {
-        Servlet loginServlet = new LoginServlet();
-        Servlet listServlet = new ListServlet();
-        Servlet logoutServlet = new LogoutServlet();
-        Servlet desktopServlet = new DesktopServlet();
-        Servlet uploadServlet = new UploadServlet();
-        Servlet downloadServlet = new DownloadServlet();
-        SocketServlet socketServlet = new SocketServlet();
-
-        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        context.addServlet(new ServletHolder(socketServlet), "/send");
-        context.addServlet(new ServletHolder(loginServlet), "/login");
-        context.addServlet(new ServletHolder(logoutServlet), "/logout");
-        context.addServlet(new ServletHolder(listServlet), "/list");
-        context.addServlet(new ServletHolder(desktopServlet), "/desktop");
-
-        ServletHolder uploadHolder = new ServletHolder(uploadServlet);
-        uploadHolder.getRegistration().setMultipartConfig(new MultipartConfigElement("media"));
-        context.addServlet(uploadHolder, "/upload");
-
-        context.addServlet(new ServletHolder(downloadServlet), "/download");
-
-        return context;
     }
 
     private static HandlerList createHandlers(ServletContextHandler context) {
