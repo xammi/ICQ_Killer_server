@@ -27,7 +27,9 @@ public class LoginServlet extends Servlet {
         String user = request.getParameter("nickname");
         if (user == null) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            System.out.println("login: Unknown user");
+
+            logger.log("LoginServlet: Unknown user");
+            System.out.println("LoginServlet: Unknown user");
             return;
         }
 

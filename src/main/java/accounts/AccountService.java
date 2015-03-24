@@ -1,5 +1,7 @@
 package accounts;
 
+import loggers.Logger;
+import managers.LoggerManager;
 import msgsystem.Abonent;
 import msgsystem.AddressService;
 import msgsystem.MessageSystem;
@@ -16,6 +18,8 @@ import java.util.Set;
  * Created by max on 10.03.15.
  */
 public class AccountService implements Abonent, Runnable {
+
+    private static final Logger logger = LoggerManager.getFor("AccountService");
 
     private final Map<String, Socket> clients = new HashMap<>();
     private final MessageSystem msys;
@@ -48,6 +52,8 @@ public class AccountService implements Abonent, Runnable {
 
         if (clients.containsKey(user)) {
             msys.sendMessage(new LoginAnswer(addressBack, false, null));
+
+            logger.log("login: User already exists (" + user + ")");
             System.out.println("login: User already exists (" + user + ")");
         }
         else {
@@ -56,6 +62,8 @@ public class AccountService implements Abonent, Runnable {
 
             clients.put(user, null);
             msys.sendMessage(new LoginAnswer(addressBack, true, others));
+
+            logger.log("login: success (" + user + ")");
             System.out.println("login: success (" + user + ")");
         }
     }
@@ -73,9 +81,11 @@ public class AccountService implements Abonent, Runnable {
                     socket.sendToClient("user_went_out", data);
             }
 
+            logger.log("logout: success (" + user + ")");
             System.out.println("logout: success (" + user + ")");
         }
         else {
+            logger.log("logout: Unknown user (" + user + ")");
             System.out.println("logout: Unknown user (" + user + ")");
         }
     }
@@ -97,9 +107,11 @@ public class AccountService implements Abonent, Runnable {
                     other.sendToClient("user_come_in", data);
             }
 
+            logger.log("setSocket: success (" + user + ")");
             System.out.println("setSocket: success (" + user + ")");
         }
         else {
+            logger.log("setSocket: Unknown user (" + user + ")");
             System.out.println("setSocket: Unknown user (" + user + ")");
         }
     }
@@ -116,7 +128,8 @@ public class AccountService implements Abonent, Runnable {
             socketWhom.sendToClient("message", data);
         }
         else {
-            System.out.println("AccountServer.sendMessage: " + "Unknown whom (" + whom + ")");
+            logger.log("sendMessage: Unknown whom (" + whom + ")");
+            System.out.println("AccountServer.sendMessage: Unknown whom (" + whom + ")");
         }
     }
 
@@ -128,6 +141,8 @@ public class AccountService implements Abonent, Runnable {
         others.remove(user);
 
         msys.sendMessage(new ListAnswer(addressBack, others));
+
+        logger.log("getOthers: (" + user + ")");
         System.out.println("getOthers: (" + user + ")");
     }
 }

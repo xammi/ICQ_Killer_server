@@ -20,10 +20,13 @@ public class LogoutServlet extends Servlet {
         String user = request.getParameter("nickname");
         if (user == null) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            System.out.println("logout: Unknown user");
+
+            logger.log("LogoutServlet: Unknown user");
+            System.out.println("LogoutServlet: Unknown user");
             return;
         }
 
         msys.sendMessage(new LogoutQuery(getAddress(), user));
+        logger.log("LogoutServlet: success");
     }
 }

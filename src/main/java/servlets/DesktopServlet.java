@@ -29,5 +29,6 @@ public class DesktopServlet extends Servlet {
                 printout.println(line);
             }
         }
+        logger.log("DesktopServlet: success");
     }
 }

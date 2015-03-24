@@ -29,10 +29,12 @@ public class UploadServlet extends Servlet {
         if (from == null) {
             json.put("status", "fail");
             json.put("error", "Unknown user (from)");
+            logger.log("UploadServlet: Unknown user (from)");
         }
         else if (whom == null) {
             json.put("status", "fail");
             json.put("error", "Unknown user (whom)");
+            logger.log("UploadServlet: Unknown user (whom)");
         }
         else {
 
@@ -41,6 +43,7 @@ public class UploadServlet extends Servlet {
             if (filePart == null) {
                 json.put("status", "fail");
                 json.put("error", "File does not exist");
+                logger.log("UploadServlet: File does not exist");
             } else {
                 String fileName = filePart.getSubmittedFileName();
                 filePart.write(fileName);
@@ -58,6 +61,7 @@ public class UploadServlet extends Servlet {
 
                 json.put("status", "OK");
                 json.put("file", fileName);
+                logger.log("UploadServlet: success");
             }
         }
 

@@ -27,7 +27,9 @@ public class ListServlet extends Servlet {
         String user = request.getParameter("nickname");
         if (user == null) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            System.out.println("list: Unknown user");
+
+            logger.log("ListServlet: Unknown user");
+            System.out.println("ListServlet: Unknown user");
             return;
         }
 
@@ -42,6 +44,8 @@ public class ListServlet extends Servlet {
         PrintWriter printout = response.getWriter();
         printout.print(json);
         printout.flush();
+
+        logger.log("ListServlet: success");
     }
 
     public void recieveAnswer(ListAnswer msg) {

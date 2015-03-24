@@ -1,5 +1,7 @@
 package sockets;
 
+import loggers.Logger;
+import managers.LoggerManager;
 import msgsystem.Abonent;
 import msgsystem.AddressService;
 import msgsystem.MessageSystem;
@@ -20,6 +22,8 @@ import java.util.Map;
  */
 @WebSocket
 public class Socket implements Abonent {
+    private static final Logger logger = LoggerManager.getFor("Socket");
+
     private String nickname;
     private Session session;
 
@@ -63,7 +67,9 @@ public class Socket implements Abonent {
 
         try {
             session.getRemote().sendString(json.toString());
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
+            logger.log("sendToClient: " + e.toString());
             System.out.print("sendToClient: " + e.toString());
         }
     }

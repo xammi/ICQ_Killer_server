@@ -61,11 +61,15 @@ $(document).ready(function () {
         },
 
         sendMessage: function(message) {
+            //TODO: encrypt
+
             message = JSON.stringify(message);
             this.ws.send(message);
         },
 
         handle: function (action, data) {
+            //TODO: decrypt
+
             if (action === 'message') {
                 var text = data.message;
                 var from = data.from;
@@ -86,14 +90,14 @@ $(document).ready(function () {
         }
     };
 
+    //---------------------------------- authentication ------------------------------------------
+
     function login() {
         var nickname = $('#nickname').val();
         if (nickname === '') return;
 
-        $.ajax({
-            method: Protocol.getMethod('login'),
-            url: Protocol.getURL('login'),
-            data: {nickname: nickname}
+        Protocol.ajax('login', {
+            nickname: nickname
         }).done(function (response) {
             if (response.status == 'OK') {
                 me.html(nickname);
@@ -133,10 +137,8 @@ $(document).ready(function () {
         var nickname = me.html();
         if (nickname === '') return;
 
-        $.ajax({
-            method: Protocol.getMethod('logout'),
-            url: Protocol.getURL('logout'),
-            data: {nickname: nickname}
+        Protocol.ajax('logout', {
+            nickname: nickname
         }).done(function (response) {
             showAlert('success', 'Come back soon!');
         }).fail(function (jqXHR, textStatus) {
@@ -228,13 +230,8 @@ $(document).ready(function () {
         data.append('nickname', nickname);
         data.append('whom', whom);
 
-        $.ajax({
-            method: Protocol.getMethod('upload'),
-            url: Protocol.getURL('upload'),
-            processData: false,
-            contentType: false,
-            data: data
-        }).done(function (response) {
+        Protocol.ajax('upload', data).done(function (response) {
+
             if (response.status === 'OK') {
                 history.append('<div class="alert alert-warning">' + whom + ': ' + response.file + '</div>');
             }

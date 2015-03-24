@@ -41,5 +41,6 @@ public class DownloadServlet extends Servlet {
 
             outputStream.flush();
         }
+        logger.log("DownloadServlet: success");
     }
 }

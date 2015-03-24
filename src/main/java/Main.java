@@ -5,6 +5,9 @@
 //import loggers.ImmediateLogger;
 //import loggers.Logger;
 import confparser.Config;
+import loggers.Logger;
+import managers.LoggerManager;
+import managers.ServletManager;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
@@ -17,7 +20,7 @@ import java.util.concurrent.Executors;
 public class Main
 {
     private static final Config config = Config.getInstance();
-//    private static final Logger logger = ImmediateLogger.getInstance("Main");
+    private static final Logger logger = LoggerManager.getFor("Main");
 
     public static void main(String[] args) throws Exception{
         try {
@@ -32,15 +35,13 @@ public class Main
             Server server = new Server(serverPort);
             server.setHandler(handlers);
 
-//            logger.log("Server was started successfully");
-
+            logger.log("Server was started successfully");
             server.start();
+
             server.join();
         }
         catch (Exception e) {
-//            logger.log("Error" + e.toString());
-
-            System.out.println("Error" + e.toString());
+            logger.log("Error" + e.toString());
             e.printStackTrace();
         }
     }
