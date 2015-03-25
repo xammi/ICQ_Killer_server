@@ -28,6 +28,14 @@ public class SocketCreator implements WebSocketCreator {
                     return socket;
                 }
             }
+
+            String nickname = request.getParameter("nickname");
+
+            if (nickname != null) {
+                Socket socket = new Socket(nickname);
+                socket.registerNickname(nickname);
+                return socket;
+            }
         }
         return new Socket(null);
     }

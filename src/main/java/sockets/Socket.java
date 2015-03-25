@@ -13,6 +13,7 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -40,18 +41,23 @@ public class Socket implements Abonent {
     public void onMessage(String msg) {
         JSONObject json = new JSONObject(msg);
 
-        String action = json.getString("action");
-        JSONObject data = json.getJSONObject("data");
+        try {
+            String action = json.getString("action");
+            JSONObject data = json.getJSONObject("data");
 
-        if (action.equals("handshake")) {
-            String user = data.getString("nickname");
-            registerNickname(user);
+            if (action.equals("handshake")) {
+                String user = data.getString("nickname");
+                registerNickname(user);
+            } else if (action.equals("message")) {
+                String whom = data.getString("whom");
+                String message = data.getString("message");
+
+                msys.sendMessage(new SendQuery(nickname, whom, message));
+            }
         }
-        else if (action.equals("message")) {
-            String whom = data.getString("whom");
-            String message = data.getString("message");
-
-            msys.sendMessage(new SendQuery(nickname, whom, message));
+        catch (JSONException e) {
+            logger.log("onMessage " + e.toString());
+            System.out.println("Socket.onMessage" + e.toString());
         }
     }
 
