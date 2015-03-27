@@ -1,5 +1,9 @@
 package sockets;
 
+import Crypto.Asimmetric.AsimCrypto;
+import Crypto.CryptoFactory;
+import Crypto.NoSuchCryptoRealisationException;
+import Crypto.Simmetric.SimCrypto;
 import loggers.Logger;
 import managers.LoggerManager;
 import msgsystem.Abonent;
@@ -24,6 +28,8 @@ import java.util.Map;
 @WebSocket
 public class Socket implements Abonent {
     private static final Logger logger = LoggerManager.getFor("Socket");
+    private AsimCrypto asimKey;
+    private SimCrypto simKey;
 
     private String nickname;
     private Session session;
@@ -35,11 +41,22 @@ public class Socket implements Abonent {
         this.msys = MessageSystem.getInstance();
         this.msys.register(this);
         this.nickname = nickname;
+
+        try {
+            this.asimKey = CryptoFactory.getAsimInstance("RSA");
+            this.simKey = CryptoFactory.getSimInstance("DES");
+        }
+        catch (NoSuchCryptoRealisationException e) {
+            logger.log(e.toString());
+            System.out.println(e.toString());
+        }
     }
 
     @OnWebSocketMessage
     public void onMessage(String msg) {
         JSONObject json = new JSONObject(msg);
+
+        //TODO: decrypt here
 
         try {
             String action = json.getString("action");
@@ -72,6 +89,8 @@ public class Socket implements Abonent {
         json.put("data", data);
 
         try {
+            //TODO: encrypt here
+
             session.getRemote().sendString(json.toString());
         }
         catch (Exception e) {
