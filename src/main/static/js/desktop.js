@@ -75,6 +75,12 @@ $(document).ready(function () {
                 var from = data.from;
                 history.append('<div class="alert alert-info">' + from + ': ' + text + '</div>');
             }
+            else if (action === 'download') {
+                var link = data.url;
+                var from = data.from;
+                link = '<a href="' + link + '">Download</a>';
+                history.append('<div class="alert alert-info">' + from + ': ' + link + '</div>');
+            }
             else if (action === 'user_come_in') {
                 var nickname = data.nickname;
                 others.append('<a href="#" class="list-group-item">' + nickname + '</a>');

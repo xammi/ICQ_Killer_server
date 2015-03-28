@@ -1,5 +1,6 @@
 package servlets;
 
+import msgsystem.messages.DownloadMsg;
 import msgsystem.messages.SendQuery;
 import org.json.JSONObject;
 
@@ -56,8 +57,7 @@ public class UploadServlet extends Servlet {
                     link += "/file/read?file=" + fileName;
                 }
 
-                String message = "File was uploaded: <a href=\"" + link + "\">" + fileName + "</a>";
-                msys.sendMessage(new SendQuery(from, whom, message));
+                msys.sendMessage(new DownloadMsg(from, whom, link));
 
                 json.put("status", "OK");
                 json.put("file", fileName);
