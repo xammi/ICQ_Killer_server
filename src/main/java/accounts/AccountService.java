@@ -133,6 +133,23 @@ public class AccountService implements Abonent, Runnable {
         }
     }
 
+    public void sendMessage(DownloadMsg query) {
+        String whom = query.getWhom();
+        Socket socketWhom = this.clients.get(whom);
+
+        if (socketWhom != null) {
+            Map<String, Object> data = new HashMap<>();
+            data.put("from", query.getFrom());
+            data.put("url", query.getUrl());
+
+            socketWhom.sendToClient("download", data);
+        }
+        else {
+            logger.log("sendMessage: Unknown whom (" + whom + ")");
+            System.out.println("AccountServer.sendMessage: Unknown whom (" + whom + ")");
+        }
+    }
+
     public void getOthers(ListQuery query) {
         String addressBack = query.getAddressFrom();
         String user = query.getUser();

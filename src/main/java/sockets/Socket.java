@@ -32,15 +32,17 @@ public class Socket implements Abonent {
     private SimCrypto simKey;
 
     private String nickname;
+    private Client client;
     private Session session;
 
     protected final String address = AddressService.getSocketAddress();
     private MessageSystem msys;
 
-    public Socket(String nickname) {
+    public Socket(String nickname, Client client) {
         this.msys = MessageSystem.getInstance();
         this.msys.register(this);
         this.nickname = nickname;
+        this.client = client;
 
         try {
             this.asimKey = CryptoFactory.getAsimInstance("RSA");

@@ -1,4 +1,4 @@
-Client {
+sockets.Client {
     /login (POST): {
         nickname: string
     },
@@ -17,10 +17,16 @@ Client {
         file: string
     }
 
+    /send (GET) {
+        nickname: string,
+        client: DESKTOP|MOBILE
+    }
+
     {
         action: "handshake",
         data: {
-            nickname: string
+            nickname: string,
+            client: DESKTOP|MOBILE
         }
     }
 
@@ -53,6 +59,14 @@ Server {
         data: {
             from: string,
             text: string,
+        }
+    }
+
+    {
+        action: "download",
+        data: {
+            from: string,
+            url: string,
         }
     }
 

@@ -11,9 +11,6 @@
 
     <properties>
         <jettyVersion>9.2.7.v20150116</jettyVersion>
-        <configuration>
-            <webDefaultXml>conf/mime-types.xml</webDefaultXml>
-        </configuration>
     </properties>
 
     <dependencies>
@@ -41,6 +38,16 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20131018</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.8.4</version>
         </dependency>
     </dependencies>
 
