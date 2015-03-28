@@ -58,6 +58,7 @@ $(document).ready(function () {
 
         dropSocket: function () {
             this.ws.close();
+            delete this.ws;
         },
 
         sendMessage: function(message) {
@@ -85,13 +86,23 @@ $(document).ready(function () {
                 var nickname = data.nickname;
                 others.append('<a href="#" class="list-group-item">' + nickname + '</a>');
 
+                others.children('.list-group-item').unbind('click').click(function () {
+                    others.children('.active').removeClass('active');
+                    $(this).addClass('active');
+                });
+
                 if (others.children('.list-group-item').length === 1) {
                     others.children('.list-group-item').first().addClass('active');
                 }
             }
             else if (action === 'user_went_out') {
                 var nickname = data.nickname;
-                $("a .list-group-item").remove( ":contains('"+ nickname +"')" );
+                var element = others.children(".list-group-item");
+                element.remove(":contains('"+ nickname +"')");
+
+                if (others.children('.list-group-item').length === 1) {
+                    others.children('.list-group-item').first().addClass('active');
+                }
             }
         }
     };
