@@ -42,7 +42,7 @@ sockets.Client {
 Server {
     /login: {
         status: OK | FAIL,
-        clients: string []
+        clients: string [],
     }
 
     /list {
@@ -81,6 +81,13 @@ Server {
         action: "user_went_out",
         data: {
             nickname: string,
+        }
+    }
+
+    {
+        action: "encrypt_start",
+        data: {
+            simKey: byte []
         }
     }
 }

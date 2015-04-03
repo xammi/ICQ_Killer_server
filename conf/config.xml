@@ -9,6 +9,16 @@
         <option name="strategy" type="string">immediate</option>
     </section>
 
+    <section name="encrypt">
+        <option name="enabled" type="boolean">true</option>
+        <option name="asimmetric" type="string">RSA</option>
+        <option name="simmetric" type="string">DES</option>
+
+        <option name="working_dir" type="string">conf/</option>
+        <option name="public_path" type="string">/home/max/.ssh/rsa</option>
+        <option name="private_path" type="string">/home/max/.ssh/rsa-pub</option>
+    </section>
+
     <section name="static">
         <option name="static_dir" type="string">src/main/static</option>
     </section>

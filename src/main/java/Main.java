@@ -4,6 +4,9 @@
 
 //import loggers.ImmediateLogger;
 //import loggers.Logger;
+import Crypto.Asimmetric.AsimCrypto;
+import Crypto.CryptoFactory;
+import Crypto.NoSuchCryptoRealisationException;
 import confparser.Config;
 import loggers.Logger;
 import managers.LoggerManager;
@@ -22,8 +25,9 @@ public class Main
     private static final Config config = Config.getInstance();
     private static final Logger logger = LoggerManager.getFor("Main");
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         try {
+            prepareEncrypt();
             launchServices();
 
             ServletManager servletManager = new ServletManager();
@@ -65,5 +69,13 @@ public class Main
         handlers.addHandler(context);
 
         return handlers;
+    }
+
+    private static void prepareEncrypt() throws NoSuchCryptoRealisationException {
+        AsimCrypto asimCrypto = CryptoFactory.getAsimInstance(config.getString("encrypt", "asimmetric"));
+
+        asimCrypto.setPublicPath(config.getString("encrypt", "public_path"));
+        asimCrypto.setPrivatePath(config.getString("encrypt", "private_path"));
+        asimCrypto.generateKeys();
     }
 }

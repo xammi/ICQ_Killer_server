@@ -3,7 +3,9 @@ package sockets;
 import Crypto.Asimmetric.AsimCrypto;
 import Crypto.CryptoFactory;
 import Crypto.NoSuchCryptoRealisationException;
+import Crypto.Simmetric.IncompatibleKeyException;
 import Crypto.Simmetric.SimCrypto;
+import confparser.Config;
 import loggers.Logger;
 import managers.LoggerManager;
 import msgsystem.Abonent;
@@ -20,6 +22,9 @@ import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -28,8 +33,11 @@ import java.util.Map;
 @WebSocket
 public class Socket implements Abonent {
     private static final Logger logger = LoggerManager.getFor("Socket");
-    private AsimCrypto asimKey;
-    private SimCrypto simKey;
+
+    private static final Config config = Config.getInstance();
+    private static boolean encrypt = config.getBoolean("encrypt", "enabled");
+    private AsimCrypto asimCrypto;
+    private SimCrypto simCrypto;
 
     private String nickname;
     private Client client;
@@ -45,22 +53,37 @@ public class Socket implements Abonent {
         this.client = client;
 
         try {
-            this.asimKey = CryptoFactory.getAsimInstance("RSA");
-            this.simKey = CryptoFactory.getSimInstance("DES");
+            this.asimCrypto = CryptoFactory.getAsimInstance(config.getString("encrypt", "asimmetric"));
+
+            this.simCrypto = CryptoFactory.getSimInstance(config.getString("encrypt", "simmetric"));
+            this.simCrypto.setWorkingDir(config.getString("encrypt", "working_dir"));
+            this.simCrypto.setKey(simCrypto.generateKey());
         }
-        catch (NoSuchCryptoRealisationException e) {
+        catch (NoSuchCryptoRealisationException | IncompatibleKeyException e) {
             logger.log(e.toString());
             System.out.println(e.toString());
+            encrypt = false;
+        }
+
+        if (client == Client.DESKTOP) {
+            encrypt = false;
         }
     }
 
     @OnWebSocketMessage
     public void onMessage(String msg) {
-        JSONObject json = new JSONObject(msg);
-
-        //TODO: decrypt here
-
+        JSONObject json;
         try {
+            if (encrypt) {
+                byte [] binaryData = msg.getBytes();
+                byte [] decryptedData = simCrypto.decrypt(binaryData);
+                String str = new String(decryptedData, "UTF-8");
+                json = new JSONObject(str);
+            }
+            else {
+                json = new JSONObject(msg);
+            }
+
             String action = json.getString("action");
             JSONObject data = json.getJSONObject("data");
 
@@ -74,7 +97,7 @@ public class Socket implements Abonent {
                 msys.sendMessage(new SendQuery(nickname, whom, message));
             }
         }
-        catch (JSONException e) {
+        catch (JSONException | UnsupportedEncodingException e) {
             logger.log("onMessage " + e.toString());
             System.out.println("Socket.onMessage" + e.toString());
         }
@@ -91,9 +114,16 @@ public class Socket implements Abonent {
         json.put("data", data);
 
         try {
-            //TODO: encrypt here
+            if (encrypt) {
+                byte [] binaryData = json.toString().getBytes();
+                byte [] encryptedData = simCrypto.encrypt(binaryData);
 
-            session.getRemote().sendString(json.toString());
+                ByteBuffer buffer = ByteBuffer.wrap(encryptedData);
+                session.getRemote().sendBytesByFuture(buffer);
+            }
+            else {
+                session.getRemote().sendStringByFuture(json.toString());
+            }
         }
         catch (Exception e) {
             logger.log("sendToClient: " + e.toString());
@@ -111,6 +141,13 @@ public class Socket implements Abonent {
     public void registerNickname(String nickname) {
         this.nickname = nickname;
         msys.sendMessage(new SetSocket(getAddress(), nickname, this));
+
+        if (encrypt) {
+            Map<String, Object> data = new HashMap<>();
+            byte [] key = asimCrypto.encrypt(simCrypto.getKey().toBytes());
+            data.put("simKey", key);
+            this.sendToClient("encrypt_start", data);
+        }
     }
 
     @Override
