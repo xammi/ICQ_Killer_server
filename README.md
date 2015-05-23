@@ -21,16 +21,19 @@
  - для логирования: https://github.com/nfetissow/Logger
  - для шифрования: https://github.com/nfetissow/ICQ_Killer_Crypto
 
+Выгружать полностью проекты и самому собирать не нужно. Скачайте только jar-архивы.
+
+
 Запуск сервера:
 
-1) $ git clone https://github.com/xammi/ICQ_Killer_server
-2) Открыть Intellij IDEA
-3) Импорт проекта -> выбрать в появившемся диалоге root/pom.xml
-4) Задать путь к JDK, если его нет в JAVA_HOME
-5) Подождать пока откроется окно проекта и пройдет индексация
-6) В верхнем меню: Run -> Edit Configurations -> + -> Main Class = Main -> Ok
-7) В верхнем меню: File -> Project Structure -> Libraries -> + -> Logger -> + -> ICQ_Killer_server
-8) Shift-F10
+- $ git clone https://github.com/xammi/ICQ_Killer_server
+- Открыть Intellij IDEA
+- Импорт проекта -> выбрать в появившемся диалоге root/pom.xml
+- Задать путь к JDK, если его нет в JAVA_HOME
+- Подождать пока откроется окно проекта и пройдет индексация
+- В верхнем меню: Run -> Edit Configurations -> + -> Main Class = Main -> Ok
+- В верхнем меню: File -> Project Structure -> Libraries -> + -> Logger -> + -> ICQ_Killer_server
+- Shift-F10
 
 При правильном выполнении всех инструкций, в Messages появится запись, что сервер начал работать на порту по умолчанию (=8082).
 Чтобы изменить порт, необходимо перейти в root/conf/config.xml и поменять в секции general опцию port.
